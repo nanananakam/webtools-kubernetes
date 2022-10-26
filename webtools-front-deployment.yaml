@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webtools-front
+spec:
+  selector:
+    matchLabels:
+      app: webtools-front
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: webtools-front
+    spec:
+      containers:
+      - name: webtools-front
+        image: kix.ocir.io/ax0w66dqmxlm/webtools
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: ocisecret
