@@ -26,11 +26,25 @@ data:
         upstream webtools-front {
                 server webtools-front:3000;
         }
+    
+        server {
+            listen 80;
+    
+            server_name nanananakam.com;
+    
+            return 301 https://www.nanananakam.com$request_uri;
+        }
 
         server {
             listen 80;
 
+            server_name www.nanananakam.com oracle.nanananakam.com;
+    
             location / {
+                if ($http_x_forwarded_proto = http) {
+                    return 301 https://$host$request_uri;
+                }
+    
                 proxy_pass         http://webtools-front;
                 proxy_redirect     off;
             }

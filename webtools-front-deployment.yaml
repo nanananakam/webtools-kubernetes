@@ -20,3 +20,15 @@ spec:
         - containerPort: 3000
       imagePullSecrets:
         - name: ocisecret
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - webtools-front
+              topologyKey: kubernetes.io/hostname
