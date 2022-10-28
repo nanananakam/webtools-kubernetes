@@ -17,11 +17,8 @@ data:
 
     http {
         include       /etc/nginx/mime.types;
-        default_type  application/octet-stream;
 
-        sendfile        on;
         keepalive_timeout  300;
-
 
         upstream webtools-front {
             server webtools-front:3000;
