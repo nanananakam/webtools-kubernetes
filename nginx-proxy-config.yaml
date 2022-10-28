@@ -24,7 +24,11 @@ data:
 
 
         upstream webtools-front {
-                server webtools-front:3000;
+            server webtools-front:3000;
+        }
+    
+        upstream webtools-go-api {
+            server webtools-go-api:80;
         }
     
         server {
@@ -38,7 +42,7 @@ data:
         server {
             listen 80;
 
-            server_name www.nanananakam.com oracle.nanananakam.com;
+            server_name www.nanananakam.com;
     
             location /_nuxt/ {
                 if ($http_x_forwarded_proto = http) {
@@ -57,6 +61,23 @@ data:
                 add_header Cache-Control "no-cache, no-store, max-age=0, must-revalidate" always;
     
                 proxy_pass         http://webtools-front;
+                proxy_redirect     off;
+            }
+        }
+    
+        server {
+            listen 80;
+
+            server_name api.nanananakam.com;
+    
+            location / {
+                if ($http_x_forwarded_proto = http) {
+                    return 301 https://$host$request_uri;
+                }
+    
+                add_header Cache-Control "no-cache, no-store, max-age=0, must-revalidate" always;
+    
+                proxy_pass         http://webtools-go-api;
                 proxy_redirect     off;
             }
         }

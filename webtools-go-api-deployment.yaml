@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webtools-go-api
+spec:
+  selector:
+    matchLabels:
+      app: webtools-go-api
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: webtools-go-api
+    spec:
+      containers:
+        - name: webtools-go-api
+          image: kix.ocir.io/ax0w66dqmxlm/webtools-go-api
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: recaptcha-secret
+      imagePullSecrets:
+        - name: ocisecret
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - webtools-go-api
+                topologyKey: kubernetes.io/hostname
