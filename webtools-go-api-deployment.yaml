@@ -23,6 +23,12 @@ spec:
                 name: recaptcha-secret
             - secretRef:
                 name: object-storage-s3-auth
+          readinessProbe:
+            httpGet:
+              path: /_chk
+              port: 80
+            failureThreshold: 1
+            periodSeconds: 10
           startupProbe:
             httpGet:
               path: /_chk
@@ -30,8 +36,7 @@ spec:
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /_chk
+            tcpSocket:
               port: 80
             failureThreshold: 1
             periodSeconds: 10

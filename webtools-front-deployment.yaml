@@ -18,6 +18,17 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          failureThreshold: 1
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 3000
+          failureThreshold: 1
+          periodSeconds: 10
       imagePullSecrets:
         - name: ocisecret
       affinity:
