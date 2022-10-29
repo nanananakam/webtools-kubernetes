@@ -21,6 +21,20 @@ spec:
           envFrom:
             - secretRef:
                 name: recaptcha-secret
+            - secretRef:
+                name: object-storage-s3-auth
+          startupProbe:
+            httpGet:
+              path: /_chk
+              port: 80
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /_chk
+              port: 80
+            failureThreshold: 1
+            periodSeconds: 10
       imagePullSecrets:
         - name: ocisecret
       affinity:
