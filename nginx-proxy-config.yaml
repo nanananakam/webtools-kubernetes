@@ -50,6 +50,18 @@ data:
                 proxy_redirect     off;
             }
     
+            location /api/ {
+                if ($http_x_forwarded_proto = http) {
+                    return 301 https://$host$request_uri;
+                }
+    
+                add_header Cache-Control "no-cache, no-store, max-age=0, must-revalidate" always;
+    
+                rewrite /api/(.*) /$1  break;
+                proxy_pass        http://webtools-go-api;
+                proxy_redirect    default;
+            }
+    
             location / {
                 if ($http_x_forwarded_proto = http) {
                     return 301 https://$host$request_uri;
