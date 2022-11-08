@@ -30,6 +30,8 @@ data:
       time_slice_format %Y/%m/%d/%H%M
       path fluentd_logs/nginx_access/
       s3_object_key_format %{path}%{time_slice}_%{uuid_flush}.%{file_extension}
+      flush_interval 600s
+      flush_at_shutdown true
     </match>
     
     <match s3.nginx_error>
@@ -42,6 +44,8 @@ data:
       time_slice_format %Y/%m/%d/%H%M
       path fluentd_logs/nginx_error/
       s3_object_key_format %{path}%{time_slice}_%{uuid_flush}.%{file_extension}
+      flush_interval 600s
+      flush_at_shutdown true
     </match>
     
     <match **>
