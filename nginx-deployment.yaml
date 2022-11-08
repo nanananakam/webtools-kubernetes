@@ -21,6 +21,8 @@ spec:
         - name: nginx-proxy-config
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
+        - name: log-volume
+          mountPath: /var/log
         readinessProbe:
           httpGet:
             path: /_chk
@@ -32,10 +34,27 @@ spec:
             port: 80
           failureThreshold: 1
           periodSeconds: 10
+      - name: fluentd
+        image: nanananakam/fluentd-s3
+        imagePullPolicy: Always
+        envFrom:
+          - secretRef:
+              name: object-storage-s3-write-auth
+        volumeMounts:
+        - name: fluentd-config
+          mountPath: /fluentd/etc/fluent.conf
+          subPath: fluent.conf
+        - name: log-volume
+          mountPath: /var/log
       volumes:
       - name: nginx-proxy-config
         configMap:
           name: nginx-proxy-config
+      - name: fluentd-config
+        configMap:
+          name: fluentd-config
+      - name: log-volume
+        emptyDir: {}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

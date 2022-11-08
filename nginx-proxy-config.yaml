@@ -7,8 +7,8 @@ data:
     user  nginx;
 
     worker_processes 1;
-
-    error_log  /dev/stderr warn;
+    
+    error_log  /var/log/nginx_error.log warn;
     pid        /var/run/nginx.pid;
 
     events {
@@ -18,6 +18,29 @@ data:
     http {
         include       /etc/nginx/mime.types;
 
+        log_format  ltsv  'host:$remote_addr\t'
+                  'vhost:$http_host\t'
+                  'port:$server_port\t'
+                  'time:$time_iso8601\t'
+                  'method:$request_method\t'
+                  'uri:$request_uri\t'
+                  'protocol:$server_protocol\t'
+                  'status:$status\t'
+                  'size:$body_bytes_sent\t'
+                  'ua:$http_user_agent\t'
+                  'up_subno:$http_x_up_subno\t'
+                  'referer:$http_referer\t'
+                  'forwardedfor:$http_x_forwarded_for\t'
+                  'forwardedproto:$http_x_forwarded_proto\t'
+                  'apptime:$upstream_response_time\t'
+                  'resptime:$request_time\t'
+                  'upstream_addr:$upstream_addr\t'
+                  'upstream_status:$upstream_status\t'
+                  'upstream_size:$upstream_response_length\t'
+                  'cf_ipcountry:$http_cf_ipcountry\t'
+                  'cf_ray:$http_cf_ray';
+
+        access_log  /var/log/nginx_access.log ltsv;
         keepalive_timeout  300;
 
         upstream webtools-front {
