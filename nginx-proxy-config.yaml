@@ -13,10 +13,12 @@ data:
 
     events {
         worker_connections 1024;
-    }        
-
+    }
+    
     http {
         include       /etc/nginx/mime.types;
+
+        server_tokens off;
 
         log_format  ltsv  'host:$remote_addr\t'
                   'vhost:$http_host\t'
@@ -49,6 +51,17 @@ data:
     
         upstream webtools-go-api {
             server webtools-go-api:80;
+        }
+    
+        server {
+            listen       80 default_server;
+            server_name _;
+    
+            location /_chk {
+                empty_gif;
+                access_log off;
+                break;
+            }
         }
     
         server {
@@ -114,14 +127,4 @@ data:
             }
         }
     
-        server {
-            listen       80;
-            server_name _;
-    
-            location /_chk {
-                empty_gif;
-                access_log off;
-                break;
-            }
-        }
     }

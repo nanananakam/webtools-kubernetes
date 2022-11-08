@@ -35,7 +35,7 @@ spec:
           failureThreshold: 1
           periodSeconds: 10
       - name: fluentd
-        image: nanananakam/fluentd-s3
+        image: kix.ocir.io/ax0w66dqmxlm/fluentd-s3
         imagePullPolicy: Always
         envFrom:
           - secretRef:
@@ -55,6 +55,8 @@ spec:
           name: fluentd-config
       - name: log-volume
         emptyDir: {}
+      imagePullSecrets:
+        - name: ocisecret
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
