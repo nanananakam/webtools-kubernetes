@@ -96,7 +96,7 @@ data:
                 }
     
                 add_header Cache-Control "no-cache, no-store, max-age=0, must-revalidate" always;
-                rewrite  ^([^.]*[^/])$ $1/ permanent;
+                rewrite  ^([^.]*[^/])$ https://$host$request_uri/ permanent;
     
                 proxy_pass         http://webtools-front;
                 proxy_redirect     off;
@@ -135,7 +135,7 @@ data:
                 }
     
                 add_header Cache-Control "no-cache, no-store, max-age=0, must-revalidate" always;
-                rewrite  ^([^.]*[^/])$ $1/ permanent;
+                rewrite  ^([^.]*[^/])$ https://$host$request_uri/ permanent;
     
                 proxy_pass         http://webtools-front;
                 proxy_redirect     off;
